@@ -3,113 +3,113 @@
 	  "version": 2.0,
   "questions": [
     {
-    "question": "1. If the distance from the transmitter is doubled, and the pathloss exponent is two (like in free space), by how much does the received signal power decrease?",
+    "question": "1. In a frequency reuse plan, what is the relationship between cells within the same cluster?",
     "answers": {
-      "a": "It decreases by half.",
-      "b": "It decreases by a factor of four.",
-      "c": "It doubles.",
-      "d": "It does not change."
-    },
-    "correctAnswer": "b",
-    "difficulty": "medium"
-  },
-  {
-    "question": "2. When comparing two signals, one at a very high carrier frequency and one at a very low carrier frequency, which one will experience more pathloss over the same distance in free space?",
-    "answers": {
-      "a": "The low-frequency signal.",
-      "b": "The high-frequency signal.",
-      "c": "Both will experience the same pathloss.",
-      "d": "It depends on the transmitter power."
-    },
-    "correctAnswer": "b",
-    "difficulty": "medium"
-  },
-  {
-    "question": "3. What is the main purpose of raising the transmitter antenna height on a cellular tower?",
-    "answers": {
-      "a": "To decrease the carrier frequency.",
-      "b": "To reduce interference from other towers.",
-      "c": "To increase the signal's range by clearing obstacles.",
-      "d": "To reduce the transmitter power required."
+      "a": "They all use the exact same set of frequencies.",
+      "b": "They are all co-channel cells to each other.",
+      "c": "They each use a unique, separate set of frequencies.",
+      "d": "They must all use directional antennas."
     },
     "correctAnswer": "c",
     "difficulty": "beginner"
   },
   {
-    "question": "4. If you are in a building and your cell phone's received signal strength is weak, what is the most likely reason related to pathloss?",
+    "question": "2. Why is a hexagonal shape commonly used to represent cells in a cluster diagram?",
     "answers": {
-      "a": "The transmitter power of the base station is too low.",
-      "b": "The carrier frequency is too low.",
-      "c": "The pathloss exponent is very high due to walls and obstructions.",
-      "d": "The transmitter antenna is too high."
+      "a": "It perfectly represents the true radio signal coverage.",
+      "b": "It's the only shape that allows for frequency reuse.",
+      "c": "It tessellates to cover an area completely without gaps or overlaps.",
+      "d": "It ensures that co-channel interference is always zero."
     },
     "correctAnswer": "c",
     "difficulty": "medium"
   },
   {
-    "question": "5. Which of these factors does *not* directly influence the pathloss calculation, but rather the *final* received signal strength?",
+    "question": "3. What does the term 'cluster size' refer to?",
     "answers": {
-      "a": "Carrier frequency.",
-      "b": "Transmitter antenna height.",
-      "c": "Distance of separation.",
-      "d": "Transmitter power."
-    },
-    "correctAnswer": "d",
-    "difficulty": "medium"
-  },
-  {
-    "question": "6. A pathloss exponent of 4 is measured in a certain environment. What does this high value suggest?",
-    "answers": {
-      "a": "A clear, unobstructed line-of-sight path.",
-      "b": "A signal that is being guided, like in a tunnel.",
-      "c": "A very lossy environment with many reflections and obstructions.",
-      "d": "An environment where signal strength increases with distance."
+      "a": "The physical land area covered by a single cluster.",
+      "b": "The total number of users a cluster can support.",
+      "c": "The number of cells in a single cluster.",
+      "d": "The number of co-channel cells in the network."
     },
     "correctAnswer": "c",
     "difficulty": "beginner"
   },
   {
-    "question": "7. How does increasing the receiver antenna height, for example, by moving your phone from your pocket to your ear, typically affect the received signal?",
+    "question": "4. If a system designer chooses a cluster size of seven, what does this mean?",
     "answers": {
-      "a": "It has no effect.",
-      "b": "It significantly increases the pathloss.",
-      "c": "It can slightly improve the signal by reducing local obstructions.",
-      "d": "It changes the carrier frequency."
-    },
-    "correctAnswer": "c",
-    "difficulty": "beginner"
-  },
-  {
-    "question": "8. To calculate the received signal strength, you need the transmitter power and the pathloss. How are they combined?",
-    "answers": {
-      "a": "Transmitter power is added to the pathloss.",
-      "b": "Pathloss is subtracted from the transmitter power.",
-      "c": "Transmitter power is multiplied by the pathloss.",
-      "d": "Transmitter power is divided by the pathloss."
-    },
-    "correctAnswer": "b",
-    "difficulty": "medium"
-  },
-  {
-    "question": "9. A pathloss prediction formula is used primarily to...",
-    "answers": {
-      "a": "Choose the brand of the transmitter.",
-      "b": "Estimate the coverage area and plan a wireless network.",
-      "c": "Calculate the data speed of the connection.",
-      "d": "Determine the physical size of the receiver antenna."
-    },
-    "correctAnswer": "b",
-    "difficulty": "beginner"
-  },
-  {
-    "question": "10. In a real-world city environment, the measured pathloss is almost always...?",
-    "answers": {
-      "a": "Greater than the pathloss predicted by the free-space model.",
-      "b": "Less than the pathloss predicted by the free-space model.",
-      "c": "Exactly equal to the pathloss predicted by the free-space model.",
-      "d": "Zero."
+      "a": "The entire available frequency spectrum is divided into seven sets.",
+      "b": "There are seven co-channel cells for every cell.",
+      "c": "Each cell can only talk to seven other cells.",
+      "d": "The system can only support seven users at a time."
     },
     "correctAnswer": "a",
+    "difficulty": "medium"
+  },
+  {
+    "question": "5. What is the primary limiting factor that prevents using a cluster size of one (where all cells use all frequencies)?",
+    "answers": {
+      "a": "Extreme co-channel interference",
+      "b": "High cost of base station equipment",
+      "c": "Low system capacity",
+      "d": "Signal attenuation over short distances"
+    },
+    "correctAnswer": "a",
+    "difficulty": "medium"
+  },
+  {
+    "question": "6. In a frequency reuse pattern, how many 'first-tier' co-channel cells typically surround a center cell?",
+    "answers": {
+      "a": "One",
+      "b": "Two",
+      "c": "Six",
+      "d": "It depends on the cluster size."
+    },
+    "correctAnswer": "c",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "7. A network operator wants to increase the capacity in a dense urban area. What change to the cluster size would help achieve this?",
+    "answers": {
+      "a": "Increase the cluster size.",
+      "b": "Decrease the cluster size.",
+      "c": "Keep the cluster size the same but increase tower height.",
+      "d": "Use a cluster size of zero."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "8. What is the main negative consequence of decreasing the cluster size to improve capacity?",
+    "answers": {
+      "a": "A decrease in the total number of channels available.",
+      "b": "An increase in co-channel interference.",
+      "c": "A larger physical footprint for each cell.",
+      "d": "A reduction in the number of handoffs."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "9. The 'frequency reuse factor' is inversely related to what parameter?",
+    "answers": {
+      "a": "The cluster size",
+      "b": "The cell radius",
+      "c": "The number of users",
+      "d": "The height of the antenna"
+    },
+    "correctAnswer": "a",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "10. What is the purpose of 'tessellating' or repeating the cell cluster pattern?",
+    "answers": {
+      "a": "To ensure every user has the same signal strength.",
+      "b": "To provide continuous coverage over a large service area.",
+      "c": "To reduce the number of base stations needed.",
+      "d": "To eliminate all adjacent channel interference."
+    },
+    "correctAnswer": "b",
     "difficulty": "medium"
   }
 
