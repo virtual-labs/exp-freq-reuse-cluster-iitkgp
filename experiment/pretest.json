@@ -1,39 +1,116 @@
-{
-  "version": 2.0,
+  {
+	  "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
+    "question": "1. What is a 'cell cluster' in a cellular network?",
+    "answers": {
+      "a": "A group of users all connected to the same cell tower.",
+      "b": "A single, oversized cell used to cover a large rural area.",
+      "c": "A group of adjacent cells where the entire set of available frequencies is used exactly once.",
+      "d": "All the cells in a network that belong to the same service provider."
     },
-    {
-      "question": "This is a Sample Question 2?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    }
+    "correctAnswer": "c",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "2. What is the main advantage of using a **small** cluster size?",
+    "answers": {
+      "a": "It greatly reduces co-channel interference.",
+      "b": "It increases the total system capacity.",
+      "c": "It simplifies the handoff process between cells.",
+      "d": "It allows for a much larger frequency reuse distance."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "3. What is the main advantage of using a **large** cluster size?",
+    "answers": {
+      "a": "It increases the number of channels available in each cell.",
+      "b": "It allows for a greater number of total users in the system.",
+      "c": "It increases the distance between co-channel cells, reducing interference.",
+      "d": "It makes the cell towers cheaper to build."
+    },
+    "correctAnswer": "c",
+    "difficulty": "medium"
+  },
+  {
+    "question": "4. If a cellular system has a large cluster size, what does this imply for each individual cell within that cluster?",
+    "answers": {
+      "a": "Each cell will have a larger number of frequency channels.",
+      "b": "Each cell will have a smaller number of frequency channels.",
+      "c": "Each cell will experience more co-channel interference.",
+      "d": "Each cell must be physically larger."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "5. How are cell clusters used to provide coverage over a large geographic area?",
+    "answers": {
+      "a": "A single, massive cluster is created to cover the entire area.",
+      "b": "The cluster pattern is repeated, or tessellated, over and over.",
+      "c": "The cluster size is continuously changed to fit the population.",
+      "d": "Clusters are only used for the initial network setup."
+    },
+    "correctAnswer": "b",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "6. What is the primary trade-off when designing a cell cluster size?",
+    "answers": {
+      "a": "Signal strength versus the cost of the base station.",
+      "b": "System capacity versus co-channel interference.",
+      "c": "Data speed versus the number of voice calls.",
+      "d": "Coverage area versus battery life of mobile phones."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "7. How does increasing the cluster size affect co-channel interference?",
+    "answers": {
+      "a": "It increases co-channel interference.",
+      "b": "It decreases co-channel interference.",
+      "c": "It has no effect on co-channel interference.",
+      "d": "It eliminates co-channel interference completely."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "8. How does decreasing the cluster size affect the overall system capacity?",
+    "answers": {
+      "a": "It increases system capacity.",
+      "b": "It decreases system capacity.",
+      "c": "It has no effect on system capacity.",
+      "d": "It makes the system capacity unstable."
+    },
+    "correctAnswer": "a",
+    "difficulty": "medium"
+  },
+  {
+    "question": "9. The set of all available frequencies for the system is allocated...",
+    "answers": {
+      "a": "to every single cell in the network.",
+      "b": "to a single cluster, which is then repeated.",
+      "c": "to only the cells on the edge of the network.",
+      "d": "to only one cell in the very center of the network."
+    },
+    "correctAnswer": "b",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "10. What happens to the physical distance between co-channel cells when the cluster size is made larger?",
+    "answers": {
+      "a": "The distance decreases.",
+      "b": "The distance increases.",
+      "c": "The distance stays exactly the same.",
+      "d": "The co-channel cells are moved next to each other."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  }
+
   ]
 }
