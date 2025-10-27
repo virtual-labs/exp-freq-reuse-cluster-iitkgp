@@ -5,5 +5,5 @@
 2) Gordon L. Stuber, 'Principles of Mobile Communications', 2nd Edition, Gordon L. Stuber, Georgia Institute of Technology, Atlanta, Georgia, USA, Kluwer Academic Publishers.
 
 #### Video Lectures
-- [NPTEL](http://nptel.ac.in/courses/117102062/10)
+- [NPTEL](http://nptel.ac.in/courses/117102062/5)
 
