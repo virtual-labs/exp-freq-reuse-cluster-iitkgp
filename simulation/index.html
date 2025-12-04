@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequency Reuse-B: Cell Cluster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .control-panel {
+            background-color: #e0f2fe;
+            border: 2px solid #7dd3fc;
+        }
+        .control-button {
+            background-color: #f0f9ff;
+            border: 1px solid #7dd3fc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease-in-out;
+        }
+        .control-button:hover:not(:disabled) {
+            background-color: #e0f2fe;
+            transform: translateY(-1px);
+        }
+        .control-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        canvas {
+            cursor: pointer;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+        }
+        .legend-shape {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            border: 1px solid #555;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #e0f2fe;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            border: 2px solid #7dd3fc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="flex flex-col justify-center items-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+            
+            <button id="start-experiment-button" class="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded">
+                Click here to start Experiment
+            </button>
+        </div>
+        <footer class="absolute bottom-4 text-gray-500 text-sm">
+            FADING CHANNELS & MOBILE COMMUNICATIONS VIRTUAL LABS - IIT KHARAGPUR
+        </footer>
+    </div>
+
+    <!-- Name Prompt Modal -->
+    <div id="name-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <label for="name-input" class="block mb-2 font-semibold">What is your name?</label>
+            <input type="text" id="name-input" class="border-2 border-gray-400 p-2 rounded w-full mb-4">
+            <button id="ok-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-8 rounded">OK</button>
+        </div>
+    </div>
+
+    <!-- Main Simulation Container -->
+    <div id="simulation-container" class="flex h-screen hidden">
+        <!-- Left Control Panel Area -->
+        <div class="w-1/4 max-w-xs flex flex-col p-4">
+
+            <!-- Experiment 6B Controls -->
+            <div id="controls-6b" class="control-panel flex-grow p-4 rounded-lg">
+                 <div class="bg-white text-center py-2 mb-4 rounded-md shadow-sm">
+                     <span id="userNameDisplayB" class="font-bold text-lg"></span>
+                 </div>
+                 <div class="space-y-4">
+                     <div class="flex items-center justify-between">
+                         <label for="cellRadiusB" class="text-sm font-medium text-gray-700">Cell Radius</label>
+                         <input type="number" id="cellRadiusB" value="40" class="w-20 rounded-md border-gray-300 shadow-sm text-sm">
+                     </div>
+                     <div class="flex items-center justify-between">
+                         <label for="clusterSizeB" class="text-sm font-medium text-gray-700">Reuse(N)</label>
+                         <select id="clusterSizeB" class="w-20 rounded-md border-gray-300 shadow-sm text-sm">
+                             <option value="3">3</option>
+                             <option value="4">4</option>
+                             <option value="7" selected>7</option>
+                             <option value="9">9</option>
+                             <option value="12">12</option>
+                         </select>
+                     </div>
+                     <div class="h-6"></div>
+                     <div class="flex flex-col space-y-2 pt-2">
+                        <button id="showCellsB" class="control-button py-2 px-4 rounded-md">Show Cells</button>
+                        <button id="checkB" class="control-button py-2 px-4 rounded-md" disabled>Check</button>
+                        <button id="clearB" class="control-button py-2 px-4 rounded-md">Clear</button>
+                        <button id="reportB" class="control-button py-2 px-4 rounded-md" disabled>Report</button>
+                     </div>
+                 </div>
+                  <div class="mt-4 p-2 bg-white rounded-md">
+                     <h3 class="font-semibold text-md mb-1">Help</h3>
+                     <p class="text-xs text-gray-600">A reuse indicated by N is taken. You should click on cells which form one cluster. Some cells belonging to the cluster, for which you should click.</p>
+                 </div>
+                 <div class="mt-4">
+                     <h3 class="font-semibold text-md mb-2">Legend</h3>
+                     <div class="space-y-2 text-sm">
+                         <div class="flex items-center"><div class="legend-shape" style="background-color: #f472b6;"></div>Center Cell</div>
+                         <div class="flex items-center"><div class="legend-shape" style="background-color: #60a5fa;"></div>Cluster Cells</div>
+                         <div class="flex items-center"><div class="legend-shape" style="background-color: #fb923c;"></div>User Selected Cells</div>
+                         <div class="flex items-center"><div class="legend-shape" style="background-color: #4ade80;"></div>Correct</div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Right Canvas Area -->
+        <div class="flex-grow p-4 flex justify-center items-center">
+            <div id="canvas-container-b" class="w-4/5 h-4/5 border-2 border-gray-400">
+                <canvas id="canvasB"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- General ---
+        function updateButtonStates(selectedCellCount) {
+            const checkButton = document.getElementById('checkB');
+            const reportButton = document.getElementById('reportB');
+            const enabled = selectedCellCount > 0;
+            checkButton.disabled = !enabled;
+            reportButton.disabled = !enabled;
+        }
+
+        // --- Hex Grid Logic ---
+        class HexGrid {
+            constructor(canvas, radius) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.radius = radius;
+                this.hexWidth = Math.sqrt(3) * radius;
+                this.hexHeight = 2 * radius;
+                this.cells = new Map();
+                this.selectedCells = new Set();
+                this.correctCells = new Set();
+                this.centerCell = null;
+                this.extremeCells = [];
+            }
+
+            // --- Coordinate Conversion for Flat-Top, Odd-Q Layout ---
+            offset_to_axial(col, row) {
+                const q = col - (row - (row & 1)) / 2;
+                const r = row;
+                return { q, r };
+            }
+
+            axial_to_offset(q, r) {
+                const col = q + (r - (r & 1)) / 2;
+                const row = r;
+                return { col, row };
+            }
+
+
+            init() {
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                this.cells.clear();
+                this.selectedCells.clear();
+                this.correctCells.clear();
+                this.centerCell = null;
+                this.extremeCells = [];
+                this.drawGrid();
+            }
+
+            drawHex(x, y, color = '#ffffff', text = '', hasPattern = false) {
+                this.ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 3 * i + Math.PI / 6;
+                    const px = x + this.radius * Math.cos(angle);
+                    const py = y + this.radius * Math.sin(angle);
+                    if (i === 0) this.ctx.moveTo(px, py);
+                    else this.ctx.lineTo(px, py);
+                }
+                this.ctx.closePath();
+                this.ctx.fillStyle = color;
+                this.ctx.fill();
+                
+                if (hasPattern) {
+                    this.ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                    for (let r = -this.radius*0.7; r < this.radius*0.7; r += 5) {
+                        for (let c = -this.radius*0.7; c < this.radius*0.7; c += 5) {
+                            if (Math.sqrt(c*c + r*r) < this.radius * 0.7) {
+                                this.ctx.fillRect(x + c - 1, y + r - 1, 2, 2);
+                            }
+                        }
+                    }
+                }
+
+                this.ctx.strokeStyle = '#000';
+                this.ctx.stroke();
+
+                if (text) {
+                    this.ctx.fillStyle = '#000';
+                    this.ctx.font = `${this.radius / 3}px Arial`;
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.fillText(text, x, y - this.radius * 0.5);
+                }
+            }
+
+            drawGrid() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                const cols = Math.ceil(this.canvas.width / this.hexWidth) + 2;
+                const rows = Math.ceil(this.canvas.height / (this.hexHeight * 3 / 4)) + 2;
+
+                for (let row = -1; row < rows; row++) {
+                    for (let col = -1; col < cols; col++) {
+                        const x = col * this.hexWidth + (row % 2 !== 0 ? this.hexWidth / 2 : 0);
+                        const y = row * this.hexHeight * 3 / 4;
+                        
+                        const cellId = `${col},${row}`;
+                        const cellNumber = `${Math.abs(col)}${Math.abs(row + 1)}`.padStart(2, '0');
+                        this.drawHex(x, y, '#ffffff', cellNumber);
+                        this.cells.set(cellId, { x, y, col, row, id: cellId, number: cellNumber });
+                    }
+                }
+            }
+
+            getCellByCoord(col, row) {
+                return this.cells.get(`${col},${row}`);
+            }
+            
+            getCellFromClick(event) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                let closestCell = null;
+                let minDist = Infinity;
+
+                this.cells.forEach(cell => {
+                    const dist = Math.sqrt((cell.x - x) ** 2 + (cell.y - y) ** 2);
+                    if (dist < this.radius && dist < minDist) {
+                        minDist = dist;
+                        closestCell = cell;
+                    }
+                });
+                return closestCell;
+            }
+
+            redraw() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.cells.forEach(cell => {
+                    let color = '#ffffff';
+                    let hasPattern = false;
+                    
+                    if ((this.centerCell && cell.id === this.centerCell.id) || this.extremeCells.some(c => c.id === cell.id)) {
+                        color = '#f472b6'; // Center/Extreme Cell
+                        hasPattern = true;
+                    }
+                    
+                    if (this.correctCells.has(cell.id)) {
+                        color = this.selectedCells.has(cell.id) ? '#4ade80' : '#60a5fa'; // Correct
+                    } else if (this.selectedCells.has(cell.id)) {
+                        color = '#fb923c'; // User Selection
+                    }
+                    
+                    this.drawHex(cell.x, cell.y, color, cell.number, hasPattern);
+                });
+            }
+        }
+
+        // --- PDF Report Generation ---
+        function generatePdfReport(params, canvas) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'landscape',
+                unit: 'pt',
+                format: 'a4'
+            });
+
+            const userName = document.getElementById('name-input').value.trim().toUpperCase();
+            const date = new Date().toLocaleString('en-IN', { dateStyle: 'long', timeStyle: 'short' });
+
+            // Header
+            doc.setFontSize(16).setFont('helvetica', 'bold');
+            doc.text('Fading Channels & Mobile Communications', 40, 40);
+            doc.setFontSize(12).setFont('helvetica', 'normal');
+            doc.text('IIT Kharagpur', 40, 60);
+            doc.text(`Date: ${date}`, 40, 80);
+
+            // Title
+            doc.setFontSize(18).setFont('helvetica', 'bold');
+            const title = 'Experiment 6B (Cell cluster)';
+            doc.text(title, doc.internal.pageSize.getWidth() / 2, 110, { align: 'center' });
+            doc.setFontSize(12).setFont('helvetica', 'normal');
+            doc.text(`Name: ${userName}`, doc.internal.pageSize.getWidth() / 2, 130, { align: 'center' });
+            doc.setLineWidth(1.5).line(40, 145, doc.internal.pageSize.getWidth() - 40, 145);
+
+            // Parameters
+            doc.setFontSize(12).setFont('helvetica', 'bold');
+            let paramText = `Cell Radius: ${params.radius}     Reuse(N): ${params.N}`;
+            doc.setFillColor(230, 230, 230);
+            doc.rect(40, 160, doc.internal.pageSize.getWidth() - 80, 25, 'F');
+            doc.setTextColor(0, 0, 0);
+            doc.text(paramText, 50, 176);
+
+            // Canvas Image (resized)
+            const canvasImage = canvas.toDataURL('image/png', 1.0);
+            const imgProps = doc.getImageProperties(canvasImage);
+            const pdfWidth = doc.internal.pageSize.getWidth() - 280; 
+            let pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdfHeight *= 0.8; // Reduce height by 20%
+            const x = (doc.internal.pageSize.getWidth() - pdfWidth) / 2; // Centered
+            doc.addImage(canvasImage, 'PNG', x, 195, pdfWidth, pdfHeight);
+
+            // Legend
+            const legendY = 195 + pdfHeight + 35; 
+            const legendItems = [
+                { color: '#f472b6', text: 'Center Cell' },
+                { color: '#60a5fa', text: 'Cluster Cells' },
+                { color: '#fb923c', text: 'User Selected Cells' },
+                { color: '#4ade80', text: 'Correct' }
+            ];
+            
+            doc.setFontSize(10);
+            let legendX = x;
+            legendItems.forEach(item => {
+                doc.setFillColor(item.color.slice(1)); 
+                doc.rect(legendX, legendY, 12, 12, 'F');
+                doc.setTextColor(0, 0, 0);
+                doc.text(item.text, legendX + 20, legendY + 9);
+                legendX += (doc.getTextWidth(item.text) + 50); 
+            });
+
+            // Footer (bottom-most position)
+            const footerY = doc.internal.pageSize.getHeight() - 40;
+            doc.setFontSize(12).setFont('helvetica', 'normal');
+            doc.text('(Signature of the Candidate)', 60, footerY);
+            doc.text('(Signature of Faculty)', doc.internal.pageSize.getWidth() - 200, footerY);
+
+            doc.save(`Report-ExpB.pdf`);
+        }
+
+
+        // --- Experiment 6B Logic ---
+        const canvas = document.getElementById('canvasB');
+        const hexGrid = new HexGrid(canvas, 40);
+
+        document.getElementById('showCellsB').addEventListener('click', () => {
+            const radius = parseInt(document.getElementById('cellRadiusB').value);
+            hexGrid.radius = radius;
+            hexGrid.init();
+            
+            // Note: centerCell is not explicitly set, but 'extremeCells' are
+            hexGrid.extremeCells = [hexGrid.getCellByCoord(4,3), hexGrid.getCellByCoord(4,5)].filter(c => c);
+            hexGrid.redraw();
+            updateButtonStates(hexGrid.selectedCells.size);
+        });
+
+        canvas.addEventListener('click', (e) => {
+            const cell = hexGrid.getCellFromClick(e);
+            if (cell) {
+                if (hexGrid.selectedCells.has(cell.id)) {
+                    hexGrid.selectedCells.delete(cell.id);
+                } else {
+                    hexGrid.selectedCells.add(cell.id);
+                }
+                hexGrid.redraw();
+                updateButtonStates(hexGrid.selectedCells.size);
+            }
+        });
+
+        document.getElementById('checkB').addEventListener('click', () => {
+            const N = parseInt(document.getElementById('clusterSizeB').value);
+            hexGrid.correctCells.clear();
+            
+            // We assume the center of the cluster is (4,4) for this logic
+            const centerOffset = hexGrid.getCellByCoord(4, 4); 
+            if (!centerOffset) return;
+            
+            const centerAxial = hexGrid.offset_to_axial(centerOffset.col, centerOffset.row);
+            let relativeAxialCoords;
+
+            switch (N) {
+                case 3: relativeAxialCoords = [[0, 0], [+1, 0], [0, +1]]; break;
+                case 4: relativeAxialCoords = [[0, 0], [+1, -1], [+1, 0], [0, +1]]; break;
+                case 9: relativeAxialCoords = [[0,0], [+1,0], [-1,0], [0,+1], [0,-1], [+1,-1], [-1,+1], [+2,-1], [-1,-1]]; break;
+                case 12: relativeAxialCoords = [[0,0], [+1,0], [-1,0], [0,+1], [0,-1], [+1,-1], [-1,+1], [+2,0], [-2,0], [+2,-1], [-2,+1], [+1,+1]]; break;
+                case 7: default: relativeAxialCoords = [[0, 0], [+1, 0], [+1, -1], [0, -1], [-1, 0], [-1, +1], [0, +1]]; break;
+            }
+
+            relativeAxialCoords.forEach(coord => {
+                const targetAxial_q = centerAxial.q + coord[0];
+                const targetAxial_r = centerAxial.r + coord[1];
+                const targetOffset = hexGrid.axial_to_offset(targetAxial_q, targetAxial_r);
+                const targetCell = hexGrid.getCellByCoord(targetOffset.col, targetOffset.row);
+                if (targetCell) {
+                    hexGrid.correctCells.add(targetCell.id);
+                }
+            });
+            hexGrid.redraw();
+        });
+
+        document.getElementById('clearB').addEventListener('click', () => {
+            hexGrid.init();
+            updateButtonStates(0);
+        });
+        
+        document.getElementById('reportB').addEventListener('click', () => {
+             const params = {
+                 radius: document.getElementById('cellRadiusB').value,
+                 N: document.getElementById('clusterSizeB').value,
+             };
+            generatePdfReport(params, canvas);
+        });
+
+        // --- Startup Logic ---
+        const startScreen = document.getElementById('start-screen');
+        const nameModal = document.getElementById('name-modal');
+        const simulationContainer = document.getElementById('simulation-container');
+        const startButton = document.getElementById('start-experiment-button');
+        const okButton = document.getElementById('ok-button');
+        const nameInput = document.getElementById('name-input');
+        
+        startButton.addEventListener('click', () => {
+            startScreen.classList.add('hidden');
+            nameModal.classList.remove('hidden');
+            nameInput.focus();
+        });
+
+        okButton.addEventListener('click', () => {
+            const userName = nameInput.value.trim();
+            if (userName) {
+                document.getElementById('userNameDisplayB').textContent = userName.toUpperCase();
+                nameModal.classList.add('hidden');
+                simulationContainer.classList.remove('hidden');
+                
+                hexGrid.init();
+            } else {
+                nameInput.style.borderColor = 'red';
+            }
+        });
+        
+        nameInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                okButton.click();
+            }
+        });
+
+        window.onresize = () => {
+            if (!simulationContainer.classList.contains('hidden')) {
+                hexGrid.init();
+            }
+        }
+
+    </script>
+<script src="../assets/js/iframeResize.js"></script>
+        
+        </body>
+</html>
