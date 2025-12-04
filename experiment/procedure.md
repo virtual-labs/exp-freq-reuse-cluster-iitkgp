@@ -4,7 +4,7 @@ Follow the instructions given below to perform the experiments:-
 
 ## 1.1 Starting the Experiments :-
 
-* Step 1: Click on the experiment you want to do by clicking on either 'Click here to start Experiment 6A (Co-channel cell)' or 'Click here to start Experiment 6B (Cell cluster)'.
+* Step 1: By clicking on 'Click here to start' for Experiment 6B (Cell cluster) you have to start.
 
    <div align="center">
     <img src="images/instruction1.png" alt="Large Scale Fading">  
@@ -13,7 +13,7 @@ Follow the instructions given below to perform the experiments:-
 
 ## 1.2 Performing Experiment 6B :-
 
-* Step 2: Let Experiment 6B (Cell cluster) is chosen. Click on the button START. A page appears with a dialogue box asking for your name. Enter your name and click OK.
+* Step 2: A page appears with a dialogue box asking for your name. Enter your name and click OK.
 
    <div align="center">
     <img src="images/instruction8.png" alt="Large Scale Fading">  
